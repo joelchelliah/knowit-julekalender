@@ -10,6 +10,4 @@ balances = foldl move M.empty
     where move acc [from, to, amountString] =
             let amount = read amountString :: Integer
                 newAcc = M.insertWith (+) to amount acc
-            in  if from == "None"
-                then newAcc
-                else M.insertWith (+) from (-amount) newAcc
+            in  M.insertWith (+) from (-amount) newAcc
