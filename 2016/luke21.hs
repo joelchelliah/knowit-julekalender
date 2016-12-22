@@ -4,8 +4,9 @@ import Data.Ord
 main :: IO ()
 main = do content <- lines <$> readFile "luke21_data.txt"
           let triangleA = (map read . words) <$> content
-              triangleC = rotate triangleA
-              triangleB = rotate triangleC
+              triangleB = rotate triangleA
+              triangleC = rotate triangleB
+              rotate    = reverse . transpose
 
           print . maximumBy (comparing tail)
                 $ map (\(corner, num) -> corner : show num)
@@ -20,8 +21,3 @@ walk (row1:row2:rows) = walk $ updatedRow:rows
             | i == 0           = n + head row1
             | i == length row1 = n + last row1
             | otherwise        = n + max (row1 !! (i - 1)) (row1 !! i)
-
-rotate :: [[Int]] -> [[Int]]
-rotate triangle = findRow <$> zip [0..] triangle
-      where findRow (i, row) = findColumn i <$> (fst <$> zip [0..] row)
-            findColumn i j   = (triangle !! (length triangle - 1 - j)) !! (i - j)
